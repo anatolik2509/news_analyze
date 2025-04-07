@@ -3,14 +3,9 @@ CREATE TABLE source (
     source_key varchar(20) not null,
     source_name varchar(1000) not null,
     latest_publication_date timestamp,
-    earliest_publication_date timestamp
+    earliest_publication_date timestamp,
+    tg_channel varchar(100)
 );
-
-CREATE TABLE source_to_tg_channel (
-    id bigserial primary key,
-    source_id bigint references source(id) unique,
-    tg_channel varchar(100) not null
-)
 
 CREATE TABLE article (
     id bigserial primary key,
@@ -21,6 +16,9 @@ CREATE TABLE article (
     article_hash varchar(32) not null
 );
 
-INSERT INTO source(source_key, source_name) VALUES ('kommersant', 'Коммерсант');
-INSERT INTO source(source_key, source_name) VALUES ('ria_news_tg', 'РИА Новости (Telegram)');
-INSERT INTO source_to_tg_channel(source_id, tg_channel) SELECT id, '@rian_ru' FROM source WHERE source_key = 'ria_news_tg';
+INSERT INTO source(source_key, source_name, tg_channel) VALUES 
+('ria_news_tg',     'РИА Новости (Telegram)',               '@rian_ru'),
+('kommersant_tg',   'Коммерсант (Telegram)',                '@kommersant'),
+('mash_tg',         'Mash (Telegram)',                      '@mash'),
+('news_efir_tg',    'Прямой Эфир (Telegram)',               '@novosti_efir'),
+('ranshe_vseh_tg',  'Раньше всех. Ну почти. (Telegram)',    '@bbbreaking');

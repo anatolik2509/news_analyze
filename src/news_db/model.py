@@ -1,12 +1,13 @@
 import hashlib
 
 class Source:
-    def __init__(self, id, key, name, latest_publication_date=None, earliest_publication_date=None):
+    def __init__(self, id, key, name, latest_publication_date=None, earliest_publication_date=None, tg_channel=None):
         self.id = id
         self.key = key
         self.name = name
         self.latest_publication_date = latest_publication_date
         self.earliest_publication_date = earliest_publication_date
+        self.tg_channel = tg_channel
 
 
 class Article:

@@ -1,31 +1,26 @@
+from typing import List
 import psycopg2
 import os
-from datetime import datetime
 from dotenv import load_dotenv
-from model import Article, Source
+from news_db.model import Article, Source
 
 class NewsRepository:
-    def __init__(self, connection_params=None, env_file=None):
+    def __init__(self, env_file='.env'):
         """
         Initialize the repository with database connection parameters.
         
         Args:
-            connection_params (dict, optional): Dictionary with connection parameters 
-                                              (host, database, user, password, etc.)
             env_file (str, optional): Path to .env file to load connection parameters from
         """
-        if env_file:
-            # Load environment variables from the specified .env file
-            load_dotenv(env_file)
-            self.connection_params = {
-                "host": os.getenv("POSTGRES_HOST", "localhost"),
-                "database": os.getenv("POSTGRES_DB"),
-                "user": os.getenv("POSTGRES_USER"),
-                "password": os.getenv("POSTGRES_PASSWORD"),
-                "port": os.getenv("POSTGRES_PORT", "5432")
-            }
-        else:
-            self.connection_params = connection_params or {}
+        # Load environment variables from the specified .env file
+        load_dotenv(env_file)
+        self.connection_params = {
+            "host": os.getenv("POSTGRES_HOST", "localhost"),
+            "database": os.getenv("POSTGRES_DB"),
+            "user": os.getenv("POSTGRES_USER"),
+            "password": os.getenv("POSTGRES_PASSWORD"),
+            "port": os.getenv("POSTGRES_PORT", "5432")
+        }
     
 
     def get_connection(self):
@@ -66,33 +61,6 @@ class NewsRepository:
                     return None
         except Exception as e:
             print(f"Error adding article: {e}")
-            raise
-    
-
-    def get_source_by_key(self, source_key: str) -> Source:
-        """
-        Get a source by its key.
-        
-        Args:
-            source_key (str): The key of the source to retrieve
-            
-        Returns:
-            Source: The source object if found, None otherwise
-        """
-        query = "SELECT id, source_key, source_name, latest_publication_date, earliest_publication_date FROM source WHERE source_key = %s"
-        
-        try:
-            with self.get_connection() as conn:
-                with conn.cursor() as cursor:
-                    cursor.execute(query, (source_key,))
-                    result = cursor.fetchone()
-                    
-                    if result:
-                        return Source(id=result[0], key=result[1], name=result[2], 
-                                      latest_publication_date=result[3], earliest_publication_date=result[4])
-                    return None
-        except Exception as e:
-            print(f"Error getting source: {e}")
             raise
     
 
@@ -144,3 +112,59 @@ class NewsRepository:
             print(f"Error getting Telegram channel: {e}")
             raise
     
+    def get_sources(self) -> List[Source]:
+        """
+        Get all sources from the database.
+        Returns:
+            List[Source]: A list of all sources
+        """
+        query = "SELECT id, source_key, source_name, latest_publication_date, earliest_publication_date, tg_channel FROM source"
+        try:
+            with self.get_connection() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(query)
+                    results = cursor.fetchall()
+
+                    sources = []
+                    for result in results:
+                        sources.append(Source(id=result[0], key=result[1], name=result[2],
+                                               latest_publication_date=result[3], earliest_publication_date=result[4], tg_channel=result[5]))
+                    return sources
+        except Exception as e:
+            print(f"Error getting sources: {e}")
+            raise
+    
+
+    def get_all_articles_sorted_by_date(self):
+        """
+        Retrieves all articles from the database sorted by publication date (newest first)
+        
+        Returns:
+            list: List of Article objects sorted by publication date
+        """
+        query = """
+            SELECT a.id, a.article_name, a.article_text, a.publication_date, a.source_id
+            FROM article a
+            ORDER BY a.publication_date DESC
+        """
+        try:
+            with self.get_connection() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(query)
+                    articles = []
+                    for row in cursor.fetchall():
+                        article = Article(
+                            id=row[0],
+                            name=row[1],
+                            text=row[2],
+                            publication_date=row[3],
+                            source_id=row[4]
+                        )
+                        articles.append(article)
+                    return articles
+        except Exception as e:
+            print(f"Error getting sources: {e}")
+            raise
+        cursor = self.connection.cursor()
+        
+

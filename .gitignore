@@ -172,3 +172,4 @@ cython_debug/
 
 *.code-workspace
 *.session
+*.session-journal
