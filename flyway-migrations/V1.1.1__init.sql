@@ -17,8 +17,10 @@ CREATE TABLE article (
 );
 
 INSERT INTO source(source_key, source_name, tg_channel) VALUES 
-('ria_news_tg',     'РИА Новости (Telegram)',               '@rian_ru'),
-('kommersant_tg',   'Коммерсант (Telegram)',                '@kommersant'),
-('mash_tg',         'Mash (Telegram)',                      '@mash'),
-('news_efir_tg',    'Прямой Эфир (Telegram)',               '@novosti_efir'),
-('ranshe_vseh_tg',  'Раньше всех. Ну почти. (Telegram)',    '@bbbreaking');
+('ria_news_tg',         'РИА Новости (Telegram)',               '@rian_ru'),
+('kommersant_tg',       'Коммерсант (Telegram)',                '@kommersant'),
+('mash_tg',             'Mash (Telegram)',                      '@mash'),
+('news_efir_tg',        'Прямой Эфир (Telegram)',               '@novosti_efir'),
+('ranshe_vseh_tg',      'Раньше всех. Ну почти. (Telegram)',    '@bbbreaking'),
+('inde_tg',             'Инде (Telegram)',                      '@indekazancity'),
+('buziness_online_tg',  'Бизнес Online. (Telegram)',            '@businessgazeta');

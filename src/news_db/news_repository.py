@@ -3,6 +3,7 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 from news_db.model import Article, Source
+from news_db.db_config import DatabaseConfig
 
 class NewsRepository:
     def __init__(self, env_file='.env'):
@@ -12,20 +13,12 @@ class NewsRepository:
         Args:
             env_file (str, optional): Path to .env file to load connection parameters from
         """
-        # Load environment variables from the specified .env file
-        load_dotenv(env_file)
-        self.connection_params = {
-            "host": os.getenv("POSTGRES_HOST", "localhost"),
-            "database": os.getenv("POSTGRES_DB"),
-            "user": os.getenv("POSTGRES_USER"),
-            "password": os.getenv("POSTGRES_PASSWORD"),
-            "port": os.getenv("POSTGRES_PORT", "5432")
-        }
+        self.db_config = DatabaseConfig(env_file)
     
 
     def get_connection(self):
         """Create and return a database connection."""
-        return psycopg2.connect(**self.connection_params)
+        return self.db_config.create_connection()
     
 
     def add_article(self, article: Article):

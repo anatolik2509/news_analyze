@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Топики</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .topic {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .topic h3 {
+            margin-top: 0;
+        }
+        .actions {
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .edit-button {
+            background-color: #2196F3;
+        }
+        .navigation {
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="navigation">
+        <a href="/articles">Статьи</a>
+        <a href="/topics">Топики</a>
+        <a href="/events">События</a>
+    </div>
+
+    <h1>Топики</h1>
+    
+    <div class="actions">
+        <a href="/topics/new" class="button">Создать новый топик</a>
+    </div>
+    
+    {% if topics %}
+        {% for topic in topics %}
+        <div class="topic">
+            <h3>{{ topic.name }}</h3>
+            {% if topic.description %}
+                <p>{{ topic.description }}</p>
+            {% endif %}
+            <a href="/topics/edit/{{ topic.id }}" class="button edit-button">Редактировать</a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Нет доступных топиков.</p>
+    {% endif %}
+</body>
+</html>

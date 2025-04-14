@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if event %}Редактирование события{% else %}Создание нового события{% endif %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 100px;
+        }
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .cancel-button {
+            background-color: #f44336;
+            margin-left: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .article-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        .article-item {
+            margin-bottom: 8px;
+        }
+        .navigation {
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="navigation">
+        <a href="/articles">Статьи</a>
+        <a href="/topics">Топики</a>
+        <a href="/events">События</a>
+    </div>
+
+    <div class="form-container">
+        <h1>{% if event %}Редактирование события{% else %}Создание нового события{% endif %}</h1>
+        
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <form method="post">
+            <div class="form-group">
+                <label for="name">Название события*:</label>
+                <input type="text" id="name" name="name" value="{{ event.name if event else '' }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="summary">Краткое описание:</label>
+                <textarea id="summary" name="summary">{{ event.summary if event else '' }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="topic_id">Топик:</label>
+                <select id="topic_id" name="topic_id">
+                    <option value="">-- Выберите топик --</option>
+                    {% for topic in topics %}
+                    <option value="{{ topic.id }}" {% if event and event.topic_id == topic.id %}selected{% endif %}>
+                        {{ topic.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="button">Сохранить</button>
+                <a href="/events" class="button cancel-button">Отмена</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

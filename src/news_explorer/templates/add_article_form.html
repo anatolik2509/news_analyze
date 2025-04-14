@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавление статьи к событию</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .cancel-button {
+            background-color: #f44336;
+            margin-left: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .navigation {
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #2196F3;
+        }
+        .event-info {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navigation">
+        <a href="/articles">Статьи</a>
+        <a href="/topics">Топики</a>
+        <a href="/events">События</a>
+    </div>
+
+    <div class="form-container">
+        <h1>Добавление статьи к событию</h1>
+        
+        <div class="event-info">
+            <h2>{{ event.name }}</h2>
+            {% if event.summary %}
+                <p>{{ event.summary }}</p>
+            {% endif %}
+        </div>
+        
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <form method="post">
+            <div class="form-group">
+                <label for="article_id">Выберите статью для добавления:</label>
+                <input type="text" id="article_id" name="article_id" required/>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="button">Добавить статью</button>
+                <a href="/events" class="button cancel-button">Отмена</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>События</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .event {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .topic {
+            color: #666;
+            font-style: italic;
+        }
+        .articles {
+            margin-top: 10px;
+        }
+        .article {
+            margin: 5px 0;
+            padding: 5px;
+            background-color: #f9f9f9;
+            font-size: small;
+        }
+        .actions {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .edit-button {
+            background-color: #2196F3;
+        }
+        .navigation {
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="navigation">
+        <a href="/articles">Статьи</a>
+        <a href="/topics">Топики</a>
+        <a href="/events">События</a>
+    </div>
+
+    <h1>События</h1>
+    
+    <div class="actions">
+        <a href="/events/new" class="button">Создать новое событие</a>
+    </div>
+    
+    {% if events_data %}
+        {% for event, topic, articles in events_data %}
+        <div class="event">
+            <h2>{{ event.name }}</h2>
+            <div class="topic">Топик: {{ topic.name }}</div>
+            {% if event.summary %}
+            <p>{{ event.summary }}</p>
+            {% endif %}
+            
+            <div class="articles">
+                <h3>Связанные статьи:</h3>
+                {% if articles %}
+                    {% for article in articles %}
+                    <div class="article">
+                        <h4>{{ article.name }}</h4>
+                        <p>{% autoescape false %}{{ article.text }}{% endautoescape %}</p>
+                        <p>Дата публикации: {{ article.formatted_date }}</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Нет связанных статей</p>
+                {% endif %}
+            </div>
+            
+            <a href="/events/edit/{{ event.id }}" class="button edit-button">Редактировать</a>
+            <a href="/events/{{ event.id }}/articles" class="button edit-button">Добавить статью</a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Нет доступных событий.</p>
+    {% endif %}
+</body>
+</html>
