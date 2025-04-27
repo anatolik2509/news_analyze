@@ -159,5 +159,3 @@ class NewsRepository:
             print(f"Error getting sources: {e}")
             raise
         cursor = self.connection.cursor()
-        
-
