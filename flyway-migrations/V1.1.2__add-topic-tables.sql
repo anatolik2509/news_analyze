@@ -9,7 +9,7 @@ CREATE TABLE event (
     id bigserial primary key,
     name varchar(255) not null,
     summary text,
-    topic_id bigint not null references topic(id)
+    topic_id bigint references topic(id)
 );
 
 CREATE TABLE article_to_event (

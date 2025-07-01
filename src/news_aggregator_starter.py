@@ -1,1 +1,3 @@
-import news_aggregator.news_clustering_2
+import news_aggregator.news_clustering
+
+news_aggregator.news_clustering.run_clustering()

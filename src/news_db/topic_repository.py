@@ -117,7 +117,7 @@ class TopicRepository:
         select_event_query = """
             SELECT e.id, e.name, e.summary, t.id, t.name AS topic_name
             FROM event e
-            JOIN topic t ON e.topic_id = t.id
+            LEFT JOIN topic t ON e.topic_id = t.id
         """
         select_articles_for_event_query = """
             SELECT a.id, a.article_name, a.article_text, a.publication_date, a.source_id
